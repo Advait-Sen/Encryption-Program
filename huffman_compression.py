@@ -23,12 +23,12 @@ def __get_huffman_tree(sorted_chars):
     
     reverse_sorted_chars=list(reversed(sorted_chars[0]))
 
-    if len(reverse_sorted_chars)<10:#if less than 10, just return the string, no need to encrypt tbh
+    if len(reverse_sorted_chars)<encryption_base:#if less than encryption_base (default 10), just return the string, no need to encrypt tbh
         exit(print(reverse_sorted_chars))
 
     while len(reverse_sorted_chars)>1:
         popped_chars=[]
-        for i in range(min(10,len(reverse_sorted_chars))):
+        for i in range(min(encryption_base,len(reverse_sorted_chars))):
             char=reverse_sorted_chars.pop(0)
             popped_chars.append([eval(char),sorted_chars[1].pop(char)])
 
@@ -44,6 +44,4 @@ def __get_huffman_tree(sorted_chars):
     return eval(reverse_sorted_chars[0])
 
 def huffman_tree(message):
-    __sort_char_map(__sort_chars(message))
-
-print(str(huffman_tree(message_file.readlines())))
+    return __sort_char_map(__sort_chars(message))[0]
