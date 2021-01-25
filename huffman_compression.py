@@ -1,5 +1,3 @@
-message_file=open('message.txt','r+')
-
 encryption_base=10#gonna implement as function argument later
 
 def __sort_chars(message):
