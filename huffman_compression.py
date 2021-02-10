@@ -1,9 +1,6 @@
-encryption_base=10#gonna implement as function argument later
+encryption_base=3#gonna implement as function argument later
 
 def __sort_chars(message):
-
-    huffman_tree={}
-
     char_count={}
 
     for line in message:
@@ -16,13 +13,12 @@ def __sort_chars(message):
 def __sort_char_map(char_map):
     return [sorted(char_map.keys(),key=char_map.get,reverse=True),char_map]
 
-
 def __get_huffman_tree(sorted_chars):
     
     reverse_sorted_chars=list(reversed(sorted_chars[0]))
 
-    if len(reverse_sorted_chars)<encryption_base:#if less than encryption_base (default 10), just return the string, no need to encrypt tbh
-        exit(print(reverse_sorted_chars))
+    if len(reverse_sorted_chars)<=encryption_base:#if less than encryption_base, just return the string, no need to encrypt tbh
+        return [eval(val) for val in reverse_sorted_chars]
 
     while len(reverse_sorted_chars)>1:
         popped_chars=[]
@@ -42,4 +38,30 @@ def __get_huffman_tree(sorted_chars):
     return eval(reverse_sorted_chars[0])
 
 def huffman_tree(message):
-    return __sort_char_map(__sort_chars(message))[0]
+    return __get_huffman_tree(__sort_char_map(__sort_chars(message)))
+
+def __evaluate_item(item, index = ''):
+    retkey=''
+    if type(item) is str:
+        return index+item
+    
+    for i in range(len(item)):
+        if type(item[i]) is str:
+            print('index '+index)
+            print('i '+str(i))
+            print('item '+item[i])
+            retkey += index +str(i)+ item[i]
+        else:
+            retkey += __evaluate_item(item[i], index + str(i))
+    
+    return retkey
+
+def huffman_encode(message):
+    encoding_key=''
+    
+    encoding_key+= __evaluate_item(huffman_tree(message))
+    print(encoding_key)
+
+message = 'idfk'
+print(huffman_tree(message))
+huffman_encode(message)

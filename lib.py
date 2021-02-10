@@ -1,18 +1,30 @@
 import hashlib
-from tkinter import *
+from tkinter import Frame, Label, Text, Button
 import __main__ as main
-
-g=282755483533707287054752184321121345766861480697448703443857012153264407439766013042402571
-n=370332600450952648802345609908335058273399487356359263038584017827194636172568988257769601*14759984361802021245410475928101669395348791811705709117374129427051861355011151
 
 def intify(str=""):
     word=[c for c in str]
-    ret=0
-    ret+=ord(word[0])
+    if len(word)==0:
+        return 0
+    ret=ord(word[0])
     for i in range(len(word)-1):
         ret*=10
         ret+=ord(word[i+1])
     return ret
+
+def dec_to_base(num,base =10):  #Maximum base - 36
+    if base==10:
+        return base
+    base_num = ""
+    while num>0:
+        dig = int(num%base)
+        if dig<10:
+            base_num += str(dig)
+        else:
+            base_num += chr(ord('A')+dig-10)  #Using uppercase letters
+        num //= base
+    base_num = base_num[::-1]  #To reverse the string
+    return base_num
 
 def sha512(string=""):
     hs = hashlib.sha512()
@@ -44,13 +56,13 @@ class takeInput(object):
         self.waiting=True
         k = Label(r,text=self.request)
         k.pack(side='left')
-        self.e = Entry(r,text='Name')
+        self.e = Text(r)
         self.e.pack(side='left')
         self.e.focus_set()
         b = Button(r,text='enter',command=self.getText)
         b.pack(side='right')
 
     def getText(self):
-        main.encodeMessage(self.e.get(),self.recipient)
+        main.encodeMessage(self.e.get('1.0','end'),self)
         self.frame.destroy()
 

@@ -2,10 +2,11 @@ import random
 from lib import *
 from tkinter import *
 import tkinter as tk
-import threading
+from huffman_compression import huffman_tree
+from huffman_compression import huffman_encode
 
 
-# Gonna scramble from unicode 32-1032
+# Gonna make a bunch of encoding methods: vinegere, huffman compression (not encoding strictly, but kinda is)
 
 #TODO:add GUI
 
@@ -39,20 +40,20 @@ end=False
 
 def encodeInput():
     person=input('Input email of the person you want to talk to')
-    msgBox= takeInput('Input your message:',win, person)
+    return takeInput('Input your message:',win, person)
 
-def encodeMessage(message, person):
-    print('sending '+message+' to '+person)
-    completing_command.set()
-
-completing_command=threading.Event()
+def encodeMessage(message, tk):
+    print('sending \n'+message+'\nto '+tk.recipient)
+    tree = huffman_tree([message])
+    print(tree)
+    huffman_encode(tree, message)
+    tk.frame.destroy()
 
 while not(end):#todo gui stuff once ive done the rest
     command=input("Input:")
     if command.lower()=='end':
         end=True
     elif command.lower()=='encode':
-        thread = threading.Thread(target=encodeInput)
-        thread.start()
+        task = encodeInput()
+        task.frame.wait_window()
 
-        completing_command.wait()
