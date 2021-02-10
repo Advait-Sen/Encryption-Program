@@ -43,25 +43,26 @@ def huffman_tree(message):
 def __evaluate_item(item, index = ''):
     retkey=''
     if type(item) is str:
-        return index+item
-    
+        return index+repr(item)
     for i in range(len(item)):
         if type(item[i]) is str:
-            print('index '+index)
-            print('i '+str(i))
-            print('item '+item[i])
-            retkey += index +str(i)+ item[i]
+            retkey += index +str(i)+ repr(item[i])
         else:
             retkey += __evaluate_item(item[i], index + str(i))
-    
     return retkey
 
-def huffman_encode(message):
-    encoding_key=''
+def huffman_encode(message = ''):
+    encoding_key = __evaluate_item(huffman_tree(message))
+    charlist = encoding_key.split('\'')
+    encodingmap = {}
     
-    encoding_key+= __evaluate_item(huffman_tree(message))
-    print(encoding_key)
+    for i in range(int((len(charlist)-1)/2)):
+        key = i*2+1
+        val = i*2
+        encodingmap.setdefault(charlist[key], charlist[val])
 
-message = 'idfk'
-print(huffman_tree(message))
-huffman_encode(message)
+    encoded_message=''
+    for char in message:
+        encoded_message+=encodingmap[char]
+    
+    return encoded_message
