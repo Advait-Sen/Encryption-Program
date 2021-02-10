@@ -1,6 +1,6 @@
-import hashlib
+from hashlib import sha256, sha512
 from tkinter import Frame, Label, Text, Button
-import __main__ as main
+from __main__ import encodeMessage
 
 def intify(str=""):
     word=[c for c in str]
@@ -27,13 +27,13 @@ def dec_to_base(num,base =10):  #Maximum base - 36
     return base_num
 
 def sha512(string=""):
-    hs = hashlib.sha512()
+    hs = sha512()
     hs.update(string.encode())
     
     return str(int(hs.hexdigest(),16))
 
 def sha256(string=""):
-    hs = hashlib.sha256()
+    hs = sha256()
     hs.update(string.encode())
     
     return str(int(hs.hexdigest(),16))
@@ -63,6 +63,6 @@ class takeInput(object):
         b.pack(side='right')
 
     def getText(self):
-        main.encodeMessage(self.e.get('1.0','end'),self)
+        encodeMessage(self.e.get('1.0','end'),self)
         self.frame.destroy()
 

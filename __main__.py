@@ -1,6 +1,5 @@
 import random
 from lib import *
-from tkinter import *
 import tkinter as tk
 from huffman_compression import huffman_tree
 from huffman_compression import huffman_encode
@@ -34,19 +33,17 @@ except:
 print(public_key)
 print(private_key)
 
-
 end=False
-
 
 def encodeInput():
     person=input('Input email of the person you want to talk to')
     return takeInput('Input your message:',win, person)
 
-def encodeMessage(message, tk):
+def encodeMessage(message = '', tk = takeInput):
     print('sending \n'+message+'\nto '+tk.recipient)
     tree = huffman_tree([message])
     print(tree)
-    huffman_encode(tree, message)
+      # (huffman_encode(tree, message))
     tk.frame.destroy()
 
 while not(end):#todo gui stuff once ive done the rest
