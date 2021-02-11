@@ -48,7 +48,7 @@ def __evaluate_item(item, index = ''):
         if type(item[i]) is str:
             if item[i]=='\n': #Special handling cos it gets parsed weirdly, can't rly do much about ' tho,
                 retkey += index +str(i)+ '\'\n\''
-            elif item[i]=='\'':
+            elif item[i]=="'":
                 exit(print('Cannot use "\'" in messages, as it unfortunately cannot be compiled by the processor.')) # todo fix this
             else:
                 retkey += index +str(i)+ repr(item[i])
@@ -58,7 +58,6 @@ def __evaluate_item(item, index = ''):
 
 def huffman_encode(message = ''):
     encoding_key = __evaluate_item(huffman_tree(message))
-    print(repr(encoding_key))
     charlist = encoding_key.split('\'')
     encodingmap = {}
     
@@ -66,7 +65,6 @@ def huffman_encode(message = ''):
         key = i*2+1
         val = i*2
         encodingmap.setdefault(charlist[key], charlist[val])
-    print(encodingmap)
     encoded_message=''
     for char in message:
         encoded_message+=encodingmap[char]
