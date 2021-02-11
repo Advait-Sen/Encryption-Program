@@ -46,13 +46,19 @@ def __evaluate_item(item, index = ''):
         return index+repr(item)
     for i in range(len(item)):
         if type(item[i]) is str:
-            retkey += index +str(i)+ repr(item[i])
+            if item[i]=='\n': #Special handling cos it gets parsed weirdly, can't rly do much about ' tho,
+                retkey += index +str(i)+ '\'\n\''
+            elif item[i]=='\'':
+                exit(print('Cannot use "\'" in messages, as it unfortunately cannot be compiled by the processor.')) # todo fix this
+            else:
+                retkey += index +str(i)+ repr(item[i])
         else:
             retkey += __evaluate_item(item[i], index + str(i))
     return retkey
 
 def huffman_encode(message = ''):
     encoding_key = __evaluate_item(huffman_tree(message))
+    print(repr(encoding_key))
     charlist = encoding_key.split('\'')
     encodingmap = {}
     
@@ -60,9 +66,31 @@ def huffman_encode(message = ''):
         key = i*2+1
         val = i*2
         encodingmap.setdefault(charlist[key], charlist[val])
-
+    print(encodingmap)
     encoded_message=''
     for char in message:
         encoded_message+=encodingmap[char]
     
-    return encoded_message
+    return [encoded_message, encoding_key]
+
+def huffman_decode(message, encoding_key):
+    decoded_message=''
+    
+    charlist = encoding_key.split('\'')
+    
+    encodingmap = {}
+    
+    for i in range(int((len(charlist)-1)/2)):
+        key = i*2+1
+        val = i*2
+        encodingmap.setdefault(charlist[val], charlist[key])
+
+    charbuffer = ''
+    
+    for char in message:
+        charbuffer+=char
+        if encodingmap.get(charbuffer,'')!='':
+            decoded_message+=encodingmap[charbuffer]
+            charbuffer=''
+    
+    return decoded_message

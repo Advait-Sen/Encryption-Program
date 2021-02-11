@@ -1,6 +1,6 @@
 from hashlib import sha256, sha512
 from tkinter import Frame, Label, Text, Button
-from __main__ import encodeMessage
+import __main__ as main
 
 def intify(str=""):
     word=[c for c in str]
@@ -63,6 +63,6 @@ class takeInput(object):
         b.pack(side='right')
 
     def getText(self):
-        encodeMessage(self.e.get('1.0','end'),self)
+        main.encodeMessage(self.e.get('1.0','end'),self)
         self.frame.destroy()
 

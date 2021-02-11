@@ -1,9 +1,8 @@
 import random
 from lib import *
 import tkinter as tk
-from huffman_compression import huffman_tree
-from huffman_compression import huffman_encode
-
+from huffman_compression import huffman_encode, huffman_decode
+from vinegere_encoding import *
 
 # Gonna make a bunch of encoding methods: vinegere, huffman compression (not encoding strictly, but kinda is)
 
@@ -40,15 +39,29 @@ def encodeInput():
     return takeInput('Input your message:',win, person)
 
 def encodeMessage(message = '', tk = takeInput):
-    print('sending \n'+message+'\nto '+tk.recipient)
-    tree = huffman_tree([message])
-    print(tree)
-      # (huffman_encode(tree, message))
+    message = message.removesuffix('\n') # Cos tkinter adds a newline at the end for some reason and it breaks everything
+    [huffman_message, huffman_key] = huffman_encode(message)
+    
+    encoded_message = huffman_key+ '\n\n' + vinegere_encode(huffman_message, huffman_key, tk.recipient)
+    print('Encoded message: '+encoded_message)
+    
+    #decoding stuff, todo move to separate function
+    
+    decoded_list = encoded_message.split('\n')
+    
+    decoding_key = decoded_list[0]
+    decoded_message = ''
+    for i in range(len(decoded_list)-2):
+        decoded_message+=decoded_list[i+2]
+    
+    print('Decoded message: ' + huffman_decode(vinegere_decode(decoded_message, decoding_key, tk.recipient), decoding_key))
+    
     tk.frame.destroy()
 
 while not(end):#todo gui stuff once ive done the rest
     command=input("Input:")
     if command.lower()=='end':
+        win.destroy()
         end=True
     elif command.lower()=='encode':
         task = encodeInput()
