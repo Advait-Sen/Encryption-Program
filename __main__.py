@@ -43,7 +43,7 @@ def encodeMessage(message = '', tk = takeInput):
     [huffman_message, huffman_key] = huffman_encode(message)
     
     encoded_message = huffman_key+ '\n\n' + vinegere_encode(huffman_message, huffman_key, tk.recipient)
-    print('Encoded message: '+encoded_message)
+    print('Encoded message: \n'+encoded_message)
     
     #decoding stuff, todo move to separate function
     
