@@ -2,5 +2,6 @@
 
 message.txt
 output.txt
+data.txt
 .vscode/
 __pycache__/*
