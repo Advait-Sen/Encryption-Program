@@ -43,24 +43,24 @@ def superEncode(string=""):
 
 class takeInput(object):
     
-    def __init__(self,requestMessage, tk, person):
+    def __init__(self, requestMessage, tk, person):
         self.root = tk
-        self.request=requestMessage
-        self.recipient=person
+        self.request = requestMessage
+        self.recipient = person
         self.frame = Frame(self.root)
         self.frame.pack()        
         self.acceptInput()
 
     def acceptInput(self):
         r = self.frame
-        self.waiting=True
-        k = Label(r,text=self.request)
-        k.pack(side='left')
+        self.waiting = True
+        k = Label(r,text = self.request)
+        k.pack(side = 'left')
         self.e = Text(r)
-        self.e.pack(side='left')
+        self.e.pack(side = 'left')
         self.e.focus_set()
-        b = Button(r,text='enter',command=self.getText)
-        b.pack(side='right')
+        b = Button(r,text = 'enter',command = self.getText)
+        b.pack(side = 'right')
 
     def getText(self):
         main.encodeMessage(self.e.get('1.0','end'),self)
