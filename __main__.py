@@ -4,34 +4,45 @@ from huffman_compression import huffman_encode, huffman_decode
 from lib import *
 from vinegere_encoding import *
 
-# Gonna make a bunch of encoding methods: vinegere, huffman compression (not encoding strictly, but kinda is)
 
-# TODO:add GUI
+# Gonna make a bunch of encoding methods: vinegere, huffman compression (not encoding strictly, but kinda is)
 
 win = tk.Tk()
 
-win.title("Encoder")
-win.minsize(400, 350)
+def main():
+    # TODO:add GUI
 
-datafile = open("data.txt", "r+")
-data = datafile.readlines()
+    win.title("Encoder")
+    win.minsize(400, 350)
 
-try:  # checking if this is first time usage, in which case this will throw error as file is empty
-    public_key = int(data[0])
-    private_key = int(data[1])
-    print('Loaded previous session')
-except:
-    name = input('Email: ')
-    password = input('Password: ')
+    datafile = open("data.txt", "r+")
+    data = datafile.readlines()
 
-    public_key = intify(superEncode(name))
-    private_key = intify(superEncode(name + password))
-    datafile.writelines(str(public_key) + '\n' + str(private_key))
+    try:  # checking if this is first time usage, in which case this will throw error as file is empty
+        public_key = int(data[0])
+        private_key = int(data[1])
+        print('Loaded previous session')
+    except:
+        name = input('Email: ')
+        password = input('Password: ')
 
-print(public_key)
-print(private_key)
+        public_key = intify(superEncode(name))
+        private_key = intify(superEncode(name + password))
+        datafile.writelines(str(public_key) + '\n' + str(private_key))
 
-end = False
+    print(public_key)
+    print(private_key)
+
+    end = False
+
+    while not (end):  # todo gui stuff once ive done the rest
+        command = input("Input:")
+        if command.lower() == 'end':
+            win.destroy()
+            end = True
+        elif command.lower() == 'encode':
+            task = encodeInput()
+            task.frame.wait_window()
 
 
 def encodeInput():
@@ -58,15 +69,8 @@ def encodeMessage(message='', tk=takeInput):
 
     print('Decoded message: ' + huffman_decode(vinegere_decode(decoded_message, decoding_key, tk.recipient),
                                                decoding_key))
-
     tk.frame.destroy()
 
 
-while not (end):  # todo gui stuff once ive done the rest
-    command = input("Input:")
-    if command.lower() == 'end':
-        win.destroy()
-        end = True
-    elif command.lower() == 'encode':
-        task = encodeInput()
-        task.frame.wait_window()
+if __name__ == '__main__':
+    main()
