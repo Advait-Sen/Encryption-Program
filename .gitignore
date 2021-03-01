@@ -5,3 +5,4 @@ output.txt
 data.txt
 .vscode/
 __pycache__/*
+.idea/*
