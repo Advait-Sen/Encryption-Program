@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Utils {
+public class Utils {//todo split different encoding methods into different files in utils package
 
     /**
      * A simple array of 64 chars which can be displayed and therefore easily copy-pasted or typed onto any keyboard. This
