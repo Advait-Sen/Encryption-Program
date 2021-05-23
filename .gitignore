@@ -1,3 +1,5 @@
 #Ignored files
 *.bin
 .idea/
+.gradle/
+build/
