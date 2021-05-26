@@ -17,7 +17,7 @@ public class Huffman implements Encoder {
     }
 
     @Override
-    public String encode(String input) {
+    public String encode(String input) {//todo fix handling of new lines
         char[] charList = input.replaceAll("\n", " ").toCharArray();
 
         Map<Character, Integer> charFrequency = new HashMap<>();

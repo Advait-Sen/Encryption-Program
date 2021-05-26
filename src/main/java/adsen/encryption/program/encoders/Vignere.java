@@ -9,8 +9,8 @@ import java.util.Random;
  * using less lookup tables and more modular arithmetic.
  */
 public class Vignere implements Encoder {
+    public final Random random;
     private final String[] keys;
-    private final Random random;
     private final long hashCodeLong;
 
     public Vignere(String... keys) {
@@ -54,8 +54,10 @@ public class Vignere implements Encoder {
     public int hashCode() {
         int code = 0;
 
-        for (String key : keys)
-            code ^= key.hashCode();
+        for (String key : keys) {
+            int keyHash = key.hashCode();
+            code ^= keyHash << 24 ^ keyHash << 16 ^ keyHash << 8 ^ keyHash ^ keyHash >> 8 ^ keyHash >> 16 ^ keyHash >> 24;
+        }
 
         return code;
     }
@@ -65,6 +67,8 @@ public class Vignere implements Encoder {
      */
     public long hashCodeLong() {
         int hashCode = this.hashCode();
-        return (long) hashCode << 32 ^ (long) hashCode << 16 ^ hashCode;
+        return (long) hashCode << 52 ^ (long) hashCode << 48 ^ (long) hashCode << 40 ^ (long) hashCode << 32 ^
+                (long) hashCode << 24 ^ (long) hashCode << 16 ^ (long) hashCode << 8 ^ hashCode ^ hashCode >> 8 ^
+                hashCode >> 16 ^ hashCode >> 24;
     }
 }

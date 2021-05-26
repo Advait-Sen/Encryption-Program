@@ -1,10 +1,6 @@
 package adsen.encryption.program.utils;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {//todo split different encoding methods into different files in utils package
@@ -115,7 +111,7 @@ public class Utils {//todo split different encoding methods into different files
 
             if (parenCounter > 0) {
                 child.append(currentChar);
-                if (parenCounter==1 && (currentChar == ']' || currentChar == '\'') && !isInQuote) {
+                if (parenCounter == 1 && (currentChar == ']' || currentChar == '\'') && !isInQuote) {
                     childArgs.add(child.toString());
                     child = new StringBuilder();
                     i++;
@@ -124,6 +120,30 @@ public class Utils {//todo split different encoding methods into different files
         }
 
         return new CharTree(childArgs.stream().map(s -> new CharTree(parseString(s))).collect(Collectors.toList()));
+    }
+
+    public static String getMessageInput(Scanner scanner, boolean encrypt) {
+        StringBuilder message = new StringBuilder();
+        String input = "";
+        System.out.println(
+                "Please input the message you want to " + (encrypt ? "encrypt" : "decrypt") +
+                        " line by line, and when you're done enter 'END' (case-sensitive)"
+        );
+
+        int lines = 0;
+
+        while (true) {
+            input = scanner.nextLine();
+            if (input.equals("END"))
+                break;
+            message.append(input);
+            message.append('\n');
+            lines++;
+        }
+
+        message = new StringBuilder(message.toString().strip());//removing initial and final whitespaces
+
+        return message.toString();
     }
 }
 
