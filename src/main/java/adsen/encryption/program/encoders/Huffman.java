@@ -1,7 +1,6 @@
 package adsen.encryption.program.encoders;
 
 import adsen.encryption.program.utils.CharTree;
-import adsen.encryption.program.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
