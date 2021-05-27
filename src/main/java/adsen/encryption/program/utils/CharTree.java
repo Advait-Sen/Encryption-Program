@@ -133,7 +133,6 @@ public class CharTree {
 
     @Override
     public int hashCode() {
-        //todo see if this becomes too expensive with large trees, hopefully not (if we even ever store a CharTree in a map)
         if (charValue != 0)
             return charValue;
         int hash = 0;
