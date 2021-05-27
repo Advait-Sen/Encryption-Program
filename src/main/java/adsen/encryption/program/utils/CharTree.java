@@ -3,7 +3,9 @@ package adsen.encryption.program.utils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CharTree {
     private final CharTree[] children;
@@ -113,7 +115,7 @@ public class CharTree {
 
     /**
      * A string representation of this {@link CharTree} object, which is entirely re-traceable into a valid {@link CharTree}
-     * object via the {@link Utils#parseString} method.
+     * object via the {@link CharTree#parseString} method.
      */
     @Override
     public String toString() {
@@ -141,5 +143,52 @@ public class CharTree {
         }
 
         return hash;
+    }
+
+    /**
+     * Parses a {@link CharTree} from an input string representation
+     *
+     * @param treeString The string representation of the string generated with the {@link CharTree#toString()} method
+     * @return A valid CharTree object, if one was able to be constructed. If not, returns null
+     * @throws IllegalStateException If there is an error in the given string
+     */
+
+    public static CharTree parseString(String treeString) {
+        if(treeString.equals("'\\n'"))//to handle newlines
+            return new CharTree('\n');
+
+        if (treeString.matches("'.'"))
+            return new CharTree(treeString.charAt(1));
+
+        List<String> childArgs = new ArrayList<>();
+
+        StringBuilder child = new StringBuilder();
+
+        char[] treeChars = treeString.toCharArray();
+        int parenCounter = 1;
+        boolean isInQuote = false;
+
+        for (int i = 1; i < treeChars.length; i++) {
+            char currentChar = treeChars[i];
+            if (currentChar == '[')
+                parenCounter++;
+
+            if (currentChar == ']')
+                parenCounter--;
+
+            if (currentChar == '\'')
+                isInQuote = !isInQuote;
+
+            if (parenCounter > 0) {
+                child.append(currentChar);
+                if (parenCounter == 1 && (currentChar == ']' || currentChar == '\'') && !isInQuote) {
+                    childArgs.add(child.toString());
+                    child = new StringBuilder();
+                    i++;
+                }
+            }
+        }
+
+        return new CharTree(childArgs.stream().map(s -> new CharTree(parseString(s))).collect(Collectors.toList()));
     }
 }

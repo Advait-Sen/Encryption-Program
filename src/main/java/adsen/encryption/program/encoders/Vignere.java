@@ -1,6 +1,6 @@
 package adsen.encryption.program.encoders;
 
-import adsen.encryption.program.utils.Utils;
+import adsen.encryption.program.utils.CharScrambleUtils;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public class Vignere implements Encoder {
             encodedString[i] = encodedChar;
         }
 
-        return Utils.charArrayToSimpleString(encodedString);
+        return CharScrambleUtils.charArrayToSimpleString(encodedString);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Vignere implements Encoder {
 
         StringBuilder decodedString = new StringBuilder();
 
-        for (char c : Utils.simpleStringToCharArray(encodedInput)) {
+        for (char c : CharScrambleUtils.simpleStringToCharArray(encodedInput)) {
             char decodedChar = (char) Math.floorMod(c - random.nextInt(), 0x10000);
             decodedString.append(decodedChar);
         }

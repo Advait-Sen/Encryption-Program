@@ -58,7 +58,7 @@ public class Huffman implements Encoder {
         String[] treeAndMessage = encodedInput.split("\n");
         CharTree huffmanTree;
         try {
-            huffmanTree = Utils.parseString(treeAndMessage[0]);
+            huffmanTree = CharTree.parseString(treeAndMessage[0]);
         } catch (Exception exc) {
             System.out.println("Invalid tree: " + treeAndMessage[0]);
             return "";
