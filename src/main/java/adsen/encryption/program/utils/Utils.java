@@ -87,6 +87,9 @@ public class Utils {//todo split different encoding methods into different files
      */
 
     public static CharTree parseString(String treeString) {
+        if(treeString.equals("'\\n'"))//to handle newlines
+            return new CharTree('\n');
+
         if (treeString.matches("'.'"))
             return new CharTree(treeString.charAt(1));
 
@@ -130,15 +133,12 @@ public class Utils {//todo split different encoding methods into different files
                         " line by line, and when you're done enter 'END' (case-sensitive)"
         );
 
-        int lines = 0;
-
         while (true) {
             input = scanner.nextLine();
             if (input.equals("END"))
                 break;
             message.append(input);
             message.append('\n');
-            lines++;
         }
 
         message = new StringBuilder(message.toString().strip());//removing initial and final whitespaces

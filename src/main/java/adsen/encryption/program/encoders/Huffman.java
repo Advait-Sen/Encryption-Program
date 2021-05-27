@@ -17,8 +17,8 @@ public class Huffman implements Encoder {
     }
 
     @Override
-    public String encode(String input) {//todo fix handling of new lines
-        char[] charList = input.replaceAll("\n", " ").toCharArray();
+    public String encode(String input) {
+        char[] charList = input.toCharArray();
 
         Map<Character, Integer> charFrequency = new HashMap<>();
 
@@ -43,7 +43,7 @@ public class Huffman implements Encoder {
 
         CharTree huffmanTree = new CharTree(sortedCharacters);
 
-        StringBuilder encodedString = new StringBuilder(huffmanTree + "\n\n");
+        StringBuilder encodedString = new StringBuilder(huffmanTree.toString().replaceAll("\n","\\\\n") + "\n\n");
 
         for (char c : charList) {
             encodedString.append(huffmanTree.charPath(c));
