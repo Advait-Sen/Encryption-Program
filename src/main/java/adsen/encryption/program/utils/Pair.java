@@ -15,18 +15,19 @@ public class Pair<A, B> implements Map.Entry<A, B> {
         return new Pair<>(a, b);
     }
 
-    public A getA(){
+    public A getA() {
         return a;
     }
 
-    public B getB(){
+    public B getB() {
         return b;
     }
 
-    public A getLeft(){
+    public A getLeft() {
         return a;
     }
-    public B getRight(){
+
+    public B getRight() {
         return b;
     }
 
@@ -43,5 +44,11 @@ public class Pair<A, B> implements Map.Entry<A, B> {
     @Override
     public B setValue(B value) {
         return b = value;
+    }
+
+    public int hashCode() {
+        int hashCodeMix = a.hashCode() ^ b.hashCode();
+
+        return (hashCodeMix << 16) ^ hashCodeMix ^ (hashCodeMix >> 16);
     }
 }
