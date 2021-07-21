@@ -1,21 +1,17 @@
 package adsen.encryption.program.encoders;
 
-import adsen.encryption.program.utils.CharScrambleUtils;
-
-import java.util.Random;
+import adsen.encryption.program.utils.Utils.CharScrambleUtils;
 
 /**
  * An encryption system inspired by regular vignere encoding, but expanded to use any characters so it works more effectively,
  * using less lookup tables and more modular arithmetic.
  */
-public class Vignere implements Encoder {
-    public final Random random;
+public class ExpandedVignere implements Encoder {
     private final String[] keys;
     private final long hashCodeLong;
 
-    public Vignere(String... keys) {
+    public ExpandedVignere(String... keys) {
         this.keys = keys;
-        this.random = new Random();
         this.hashCodeLong = this.hashCodeLong();
     }
 
@@ -29,6 +25,8 @@ public class Vignere implements Encoder {
 
         for (int i = 0; i < inputChars.length; i++) {
             char c = inputChars[i];
+            //Using mod operator cos 0xFFFF (or 2^16-1 in decimal) is the maximum value a char can be, so capping it at
+            // 0x10000 (2^16) means we won't overflow
             char encodedChar = (char) Math.floorMod(c + random.nextInt(), 0x10000);
             encodedString[i] = encodedChar;
         }
@@ -43,6 +41,7 @@ public class Vignere implements Encoder {
         StringBuilder decodedString = new StringBuilder();
 
         for (char c : CharScrambleUtils.simpleStringToCharArray(encodedInput)) {
+            //To encode we added the random.nextInt(), so here we subtract. In essence, it's the same exact number
             char decodedChar = (char) Math.floorMod(c - random.nextInt(), 0x10000);
             decodedString.append(decodedChar);
         }
