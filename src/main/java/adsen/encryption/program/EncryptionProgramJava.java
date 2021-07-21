@@ -1,8 +1,9 @@
 package adsen.encryption.program;
 
+import adsen.encryption.program.encoders.ClassicVignere;
 import adsen.encryption.program.encoders.Encoder;
 import adsen.encryption.program.encoders.Huffman;
-import adsen.encryption.program.encoders.Vignere;
+import adsen.encryption.program.encoders.ExpandedVignere;
 import adsen.encryption.program.utils.Utils;
 
 import java.util.Locale;
@@ -12,6 +13,9 @@ import java.util.Scanner;
 public class EncryptionProgramJava {
     public static void main(String[] args) {
         System.out.println("Encryption Program Running");
+
+        System.out.println((char)97);
+        System.out.println((int)'z');
 
         Scanner scanner = new Scanner(System.in);
 
@@ -26,28 +30,29 @@ public class EncryptionProgramJava {
                 String encoding = scanner.nextLine();
 
                 switch (encoding.toLowerCase(Locale.ROOT)) {
-
-                    case "vignere": {
+                    case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the encoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encoder vignere = new Vignere(keys);
+                        Encoder vignere = new ExpandedVignere(keys);
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = vignere.encode(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
-
-                        break;
                     }
-
-                    case "huffman": {
+                    case "classic_vignere" -> {
+                        System.out.println("Please input the key for the encoder");
+                        String key = scanner.nextLine();
+                        Encoder vignere = new ClassicVignere(key);
+                        String message = Utils.getMessageInput(scanner, true);
+                        String encryptedMessage = vignere.encode(message);
+                        System.out.println("Encrypted message: " + encryptedMessage);
+                    }
+                    case "huffman" -> {
                         Encoder huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = huffman.encode(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
-
-                        break;
                     }
-
-                    case "master": {//best encryption I can provide, essentially combining all the ones I have
+                    case "master" -> {//best encryption I can provide, essentially combining all the ones I have
                         String keys = "";
 
                         System.out.println("Please input your email address:");
@@ -65,16 +70,13 @@ public class EncryptionProgramJava {
 
                         keys += " " + huffmanTree;
 
-                        Encoder vignere = new Vignere(keys.split(" "));
+                        Encoder vignere = new ExpandedVignere(keys.split(" "));
 
                         String fullyEncryptedMessage = vignere.encode(huffmanEncodedMessage);
 
                         System.out.println("Encrypted message:\n" + huffmanTree + "\n\n" + fullyEncryptedMessage);
-                        break;
                     }
-
-                    default:
-                        System.out.printf("Unknown encryption method '%s'\n", encoding);
+                    default -> System.out.printf("Unknown encryption method '%s'\n", encoding);
                 }
             } else if (input.equalsIgnoreCase("decrypt")) {
 
@@ -82,31 +84,33 @@ public class EncryptionProgramJava {
                 String decoding = scanner.nextLine();
 
                 switch (decoding.toLowerCase(Locale.ROOT)) {
-
-                    case "vignere": {
+                    case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the decoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encoder vignere = new Vignere(keys);
+                        Encoder vignere = new ExpandedVignere(keys);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = vignere.decode(encryptedMessage);
 
                         System.out.println("Decrypted message: " + decryptedMessage);
-
-                        break;
                     }
+                    case "classic_vignere" -> {
+                        System.out.println("Please input the key for the decoder");
+                        String key = scanner.nextLine();
+                        Encoder vignere = new ClassicVignere(key);
+                        String encryptedMessage = Utils.getMessageInput(scanner, false);
+                        String decryptedMessage = vignere.decode(encryptedMessage);
 
-                    case "huffman": {
+                        System.out.println("Decrypted message: " + decryptedMessage);
+                    }
+                    case "huffman" -> {
                         System.out.println("Please input the message's decoding tree");
                         String tree = scanner.nextLine();
                         Encoder huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = huffman.decode(tree + "\n\n" + message);
                         System.out.println("Decrypted message: " + decryptedMessage);
-
-                        break;
                     }
-
-                    case "master": {
+                    case "master" -> {
 
                         String keys = "";
 
@@ -123,18 +127,15 @@ public class EncryptionProgramJava {
                         keys += " " + huffmanTree;
                         String encryptedMessage = treeAndEncryptedMessage[2];
 
-                        Encoder vignere = new Vignere(keys.split(" "));
+                        Encoder vignere = new ExpandedVignere(keys.split(" "));
                         String huffmanEncodedMessage = vignere.decode(encryptedMessage);
 
                         Encoder huffman = new Huffman();
                         String fullyDecodedMessage = huffman.decode(huffmanTree + "\n\n" + huffmanEncodedMessage);
 
                         System.out.println("Decrypted message: " + fullyDecodedMessage);
-                        break;
                     }
-
-                    default:
-                        System.out.printf("Unknown encryption method '%s'\n", decoding);
+                    default -> System.out.printf("Unknown encryption method '%s'\n", decoding);
                 }
             } else if (!input.equals("end"))
                 System.out.println("Unknown action '" + input + "'");
