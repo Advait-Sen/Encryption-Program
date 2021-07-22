@@ -68,7 +68,7 @@ public class EncryptionProgramJava {
 
                         String[] huffmanEncodedMessageAndTree = huffman.encode(message).split("\n");
                         String huffmanTree = huffmanEncodedMessageAndTree[0];
-                        String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo use this to seed RegularOlScrambling's RNG, as it's a number
+                        String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo maybe use this to seed RegularOlScrambling's RNG, as it's a number
 
                         keys += " " + huffmanTree;
 

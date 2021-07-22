@@ -56,7 +56,7 @@ public class Utils {
      * A class of utility functions to help scramble characters and store characters which the computer may not be able
      * to display into a neater format
      */
-    public static class CharScrambleUtils {//todo think of a better name for this
+    public static class CharScrambleUtils {
 
         /**
          * A simple array of 64 chars which can be displayed and therefore easily copy-pasted or typed onto any keyboard. This
