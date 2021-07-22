@@ -53,19 +53,6 @@ public class Utils {
     }
 
     /**
-     * Simply swaps 2 characters in a string
-     *
-     * @param inputString Original string
-     * @return Original string, but with 2 characters swapped
-     */
-    public String swapCharacter(String inputString, int indexOne, int indexTwo) {
-        char[] newString = inputString.toCharArray();
-        newString[indexOne] = inputString.charAt(indexTwo);
-        newString[indexTwo] = inputString.charAt(indexOne);
-        return new String(newString);
-    }
-
-    /**
      * A class of utility functions to help scramble characters and store characters which the computer may not be able
      * to display into a neater format
      */
@@ -147,6 +134,19 @@ public class Utils {
             }
 
             return ret;
+        }
+
+        /**
+         * Simply swaps 2 characters in a string
+         *
+         * @param inputString Original string
+         * @return Original string, but with 2 characters swapped
+         */
+        public static String swapCharacter(String inputString, int indexOne, int indexTwo) {
+            char[] newString = inputString.toCharArray();
+            newString[indexOne] = inputString.charAt(indexTwo);
+            newString[indexTwo] = inputString.charAt(indexOne);
+            return new String(newString);
         }
     }
 }

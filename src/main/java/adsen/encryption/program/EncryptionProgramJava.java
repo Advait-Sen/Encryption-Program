@@ -1,9 +1,6 @@
 package adsen.encryption.program;
 
-import adsen.encryption.program.encoders.ClassicVignere;
-import adsen.encryption.program.encoders.Encoder;
-import adsen.encryption.program.encoders.Huffman;
-import adsen.encryption.program.encoders.ExpandedVignere;
+import adsen.encryption.program.encoders.*;
 import adsen.encryption.program.utils.Utils;
 
 import java.util.Locale;
@@ -52,6 +49,11 @@ public class EncryptionProgramJava {
                         String encryptedMessage = huffman.encode(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
+                    case "regular_ol_scrambling" ->{
+                        Encoder scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        String message = Utils.getMessageInput(scanner, true);
+                        System.out.println("Encrypted message: " + scrambler.decode(message));
+                    }
                     case "master" -> {//best encryption I can provide, essentially combining all the ones I have
                         String keys = "";
 
@@ -66,7 +68,7 @@ public class EncryptionProgramJava {
 
                         String[] huffmanEncodedMessageAndTree = huffman.encode(message).split("\n");
                         String huffmanTree = huffmanEncodedMessageAndTree[0];
-                        String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo add numeric encryption cos this is a number, so it's practically begging for it...
+                        String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo use this to seed RegularOlScrambling's RNG, as it's a number
 
                         keys += " " + huffmanTree;
 
@@ -109,6 +111,11 @@ public class EncryptionProgramJava {
                         String message = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = huffman.decode(tree + "\n\n" + message);
                         System.out.println("Decrypted message: " + decryptedMessage);
+                    }
+                    case "regular_ol_scrambling" ->{
+                        Encoder scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        String message = Utils.getMessageInput(scanner, false);
+                        System.out.println("Decrypted message: " + scrambler.decode(message));
                     }
                     case "master" -> {
 
