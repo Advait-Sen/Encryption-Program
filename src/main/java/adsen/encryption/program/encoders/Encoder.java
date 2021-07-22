@@ -17,7 +17,7 @@ public interface Encoder {
      * Allows to scramble a given string however you want. Should be decode-able using {@link Encoder#decode}
      *
      * @param input The string we want to scramble
-     * @return the scrambled key
+     * @return the scrambled message
      */
     String encode(String input);
 
