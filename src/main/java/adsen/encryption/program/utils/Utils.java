@@ -80,7 +80,7 @@ public class Utils {
          */
         public static Map<Character, Integer> CHARACTER_MAP = new HashMap<>();
 
-        static {
+        static {//todo replace with DoubleWayMapping so I don't have to do this.
             for (int i = 0; i < CHARACTERS.length; i++) {
                 char c = CHARACTERS[i];
                 CHARACTER_MAP.put(c, i);

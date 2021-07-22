@@ -11,7 +11,7 @@ public class Pair<A, B> implements Map.Entry<A, B> {
         this.b = b;
     }
 
-    public static Pair<Object, Object> of(Object a, Object b) {
+    public static <T> Pair<T, T> of(T a, T b) {
         return new Pair<>(a, b);
     }
 

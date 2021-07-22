@@ -12,8 +12,10 @@ own contributing section, as each version has a different way of accepting contr
 ### Java version
 I made the Java version a Gradle project, as I am rather familiar with them from other work I've done. I made the Encoder.java
 class be the main interface for anything which encodes in this project, because I found it more logical to do so. I also
-have one big Utils.java file in my `utils` package, which is due for a change (hence the todo at the top of the file).
+have one big Utils.java file in my `utils` package, which I will keep that way due to the other files in there which are
+more so experimental datastructures, which I am using to teach myself Computer Science (like the LinkedList, or the DoubleWayMapping,
+which is an invention of my own).
 
 #### Contributing
-Import the Gradle project into your IDE, and that's about it. Make sure you have Java 12, as that is the JDK for this project.
+Import the Gradle project into your IDE, and that's about it. Make sure you have the appropriate JDK installed
 

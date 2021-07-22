@@ -6,10 +6,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.ListIterator;
 
+/**
+ * A List class which allows to define any list of arbitrary length just by defining the first and last item.
+ *
+ * @param <T>
+ */
 public class LinkedList<T> implements List<T> {
 
     /**
-     * A temporary variable used for iterating over the list
+     * A temporary variable used for iterating over the list at various points throughout the class
      */
     ListItem<T> temp;
     private int size;
@@ -18,6 +23,42 @@ public class LinkedList<T> implements List<T> {
 
     public LinkedList() {
         size = 0;
+    }
+
+    public LinkedList(T... items) {
+        size = items.length;
+        if (items.length > 0) {
+            firstItem = new ListItem<>(items[0], null, null);
+        }
+        if (items.length > 1) {
+            temp = firstItem;
+            for (int i = 1; i < items.length; i++) {
+                temp = new ListItem<>(items[i], temp, null);
+            }
+            lastItem = temp;
+        }
+    }
+
+    /**
+     * Joins any number of linked lists into one big linked list.
+     *
+     * @param lists The lists to be joined
+     * @return A big LinkedList containing all the elements of the inner lists.
+     */
+    @SafeVarargs
+    public static <T2> LinkedList<T2> join(LinkedList<T2>... lists) {
+        LinkedList<T2> ret = new LinkedList<>();
+        if (lists.length > 0) {
+            ret.firstItem = lists[0].firstItem;
+            ListItem<T2> temp;
+            for (int i = 0; i < lists.length - 1; i++) {
+                LinkedList<T2> list = lists[i];
+                temp = list.lastItem;
+                lists[i + 1].firstItem.setPrevious(temp);
+            }
+            ret.lastItem = lists[lists.length - 1].lastItem;
+        }
+        return ret;
     }
 
     /**
@@ -130,20 +171,20 @@ public class LinkedList<T> implements List<T> {
         if (size == 1) {
             firstItem = new ListItem<>(t, null, null);
             lastItem = firstItem;
-            return true;
+        } else {
+            lastItem = new ListItem<>(t, lastItem, null);
         }
-        lastItem = new ListItem<>(t, lastItem, null);
         return true;
     }
 
     @Override
     public boolean remove(Object o) {
-        boolean foundItem = false;
+        boolean foundItem;
         temp = firstItem;
-        while (temp != lastItem || foundItem) {
+        do {
             foundItem = temp.object.equals(o);
             temp = temp.nextItem;
-        }
+        } while (temp != lastItem || foundItem);
         //noinspection ConstantConditions
         if (foundItem) {
             size--;
@@ -166,22 +207,20 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public boolean addAll(Collection<? extends T> c) {
-        boolean changed = false;
         for (T t : c) {
-            changed |= this.add(t);
+            this.add(t);
         }
-        return changed;
+        return true;
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends T> c) {
         int i = index;
-        int previousSize = size;
         for (T t : c) {
             this.add(i, t);
             i++;
         }
-        return previousSize != size;
+        return true;
     }
 
     @Override
@@ -223,7 +262,7 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-        if (index == size) {//just adds the element on end in this case
+        if (index == size) {//just adds the element on the end in this case
             this.add(element);
             return;
         }
@@ -246,10 +285,10 @@ public class LinkedList<T> implements List<T> {
     public int indexOf(Object o) {
         int index = 0;
         temp = firstItem;
-        while (temp.object != o || temp != lastItem) {
+        do {
             index++;
             temp = temp.nextItem;
-        }
+        } while (temp.object != o || temp != lastItem);
         return temp.object == o ? index : -1;
     }
 
@@ -258,10 +297,10 @@ public class LinkedList<T> implements List<T> {
     public int lastIndexOf(Object o) {//same search as indexOf, but from the back instead
         int index = size;
         temp = lastItem;
-        while (temp.object != o || temp != firstItem) {
+        do {
             index--;
             temp = temp.previousItem;
-        }
+        } while (temp.object != o || temp != firstItem);
         return temp.object == o ? index : -1;
     }
 
@@ -344,10 +383,10 @@ public class LinkedList<T> implements List<T> {
 
         LinkedList<T> newList = new LinkedList<>();
         temp = newFirstItem;
-        while(temp!=newLastItem){
+        do {
             newList.add(temp.object);
             temp = temp.nextItem;
-        }
+        } while (temp != newLastItem);
         newList.add(lastItem.object);
         return newList;
     }
@@ -361,6 +400,29 @@ public class LinkedList<T> implements List<T> {
 
         set(indexA, itemB.object);
         set(indexB, itemA.object);
+    }
+
+    /**
+     * Splits this list into two lists, returning them both as a {@link Pair} of LinkedLists
+     *
+     * @param index The index of the item at the beginning of the second list
+     * @return The new lists
+     */
+    public Pair<LinkedList<T>, LinkedList<T>> split(int index) {
+        ListItem<T> newBeginning = listItemAt(index);
+        LinkedList<T> a = new LinkedList<>(), b = new LinkedList<>();
+
+        a.firstItem = this.firstItem;
+        a.lastItem = newBeginning.previousItem;
+        a.lastItem.setNext(null);
+        a.size = index;
+
+        b.firstItem = newBeginning;
+        b.lastItem = this.lastItem;
+        b.firstItem.setPrevious(null);
+        b.size = this.size - index;
+
+        return Pair.of(a, b);
     }
 
     /**
