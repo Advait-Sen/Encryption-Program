@@ -4,7 +4,6 @@ import adsen.encryption.program.utils.Utils.CharScrambleUtils;
 
 /**
  * Just scrambles the characters of a message in a reversible manner
- * todo test
  */
 public class RegularOlScrambling implements Encrypter {
 
@@ -39,6 +38,7 @@ public class RegularOlScrambling implements Encrypter {
      * This generates the same numbers as the {@link RegularOlScrambling#encrypt} function does to scramble the message's
      * characters (provided the same seed and correct encrypted message obviously), and then applies the same swaps in reverse
      * order to restore the message back to its original state.
+     *
      * @param encodedInput The scrambled message we want to unscramble
      */
     @Override
