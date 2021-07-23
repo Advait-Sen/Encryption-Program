@@ -196,13 +196,10 @@ public class LinkedList<T> implements List<T> {
 
     @Override
     public boolean containsAll(Collection<?> c) {
-        boolean hasAll = true;
         for (Object o : c) {
-            hasAll = this.contains(o);
-            if (!hasAll)
-                break;
+            if (!contains(o)) break;
         }
-        return hasAll;
+        return true;
     }
 
     @Override
@@ -409,15 +406,15 @@ public class LinkedList<T> implements List<T> {
      * @return The new lists
      */
     public Pair<LinkedList<T>, LinkedList<T>> split(int index) {
-        ListItem<T> newBeginning = listItemAt(index);
+        temp = listItemAt(index);
         LinkedList<T> a = new LinkedList<>(), b = new LinkedList<>();
 
         a.firstItem = this.firstItem;
-        a.lastItem = newBeginning.previousItem;
+        a.lastItem = temp.previousItem;
         a.lastItem.setNext(null);
         a.size = index;
 
-        b.firstItem = newBeginning;
+        b.firstItem = temp;
         b.lastItem = this.lastItem;
         b.firstItem.setPrevious(null);
         b.size = this.size - index;
