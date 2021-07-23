@@ -9,8 +9,8 @@ public class RegularOlScrambling implements Encryptor {
 
     long randomSeed;
 
-    public RegularOlScrambling(long seed) {
-        randomSeed = seed;
+    public RegularOlScrambling(int seed) {
+        randomSeed = (long) seed + seed << 16 + seed << 32;
     }
 
     /**

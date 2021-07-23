@@ -63,6 +63,9 @@ public class EncryptionProgramJava {
 
                         String message = Utils.getMessageInput(scanner, true);
 
+                        Encryptor scrambler = new RegularOlScrambling(keys.hashCode());
+                        message = scrambler.encrypt(message);
+
                         String[] huffmanEncodedMessageAndTree = huffman.encrypt(message).split("\n");
                         String huffmanTree = huffmanEncodedMessageAndTree[0];
                         String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo maybe use this to seed RegularOlScrambling's RNG, as it's a number
@@ -123,6 +126,9 @@ public class EncryptionProgramJava {
                         System.out.println("Please input your email address:");
                         keys += " " + scanner.nextLine().replaceAll(" ", "").toLowerCase(Locale.ROOT);
 
+
+                        Encryptor scrambler = new RegularOlScrambling(keys.hashCode());
+
                         String fullyEncryptedMessage = Utils.getMessageInput(scanner, false);
 
                         String[] treeAndEncryptedMessage = fullyEncryptedMessage.split("\n");
@@ -135,7 +141,9 @@ public class EncryptionProgramJava {
                         String huffmanEncodedMessage = vignere.decrypt(encryptedMessage);
 
                         Encryptor huffman = new Huffman();
-                        String fullyDecodedMessage = huffman.decrypt(huffmanTree + "\n\n" + huffmanEncodedMessage);
+                        String scrambledMessage = huffman.decrypt(huffmanTree + "\n\n" + huffmanEncodedMessage);
+
+                        String fullyDecodedMessage = scrambler.decrypt(scrambledMessage);//todo fix
 
                         System.out.println("Decrypted message: " + fullyDecodedMessage);
                     }
