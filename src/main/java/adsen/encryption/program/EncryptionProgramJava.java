@@ -1,6 +1,6 @@
 package adsen.encryption.program;
 
-import adsen.encryption.program.encoders.*;
+import adsen.encryption.program.encrypters.*;
 import adsen.encryption.program.utils.Utils;
 
 import java.util.Locale;
@@ -30,29 +30,29 @@ public class EncryptionProgramJava {
                     case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the encoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encoder vignere = new ExpandedVignere(keys);
+                        Encrypter vignere = new ExpandedVignere(keys);
                         String message = Utils.getMessageInput(scanner, true);
-                        String encryptedMessage = vignere.encode(message);
+                        String encryptedMessage = vignere.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the encoder");
                         String key = scanner.nextLine();
-                        Encoder vignere = new ClassicVignere(key);
+                        Encrypter vignere = new ClassicVignere(key);
                         String message = Utils.getMessageInput(scanner, true);
-                        String encryptedMessage = vignere.encode(message);
+                        String encryptedMessage = vignere.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
                     case "huffman" -> {
-                        Encoder huffman = new Huffman();
+                        Encrypter huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, true);
-                        String encryptedMessage = huffman.encode(message);
+                        String encryptedMessage = huffman.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
                     case "regular_ol_scrambling" ->{
-                        Encoder scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, true);
-                        System.out.println("Encrypted message: " + scrambler.decode(message));
+                        System.out.println("Encrypted message: " + scrambler.decrypt(message));
                     }
                     case "master" -> {//best encryption I can provide, essentially combining all the ones I have
                         String keys = "";
@@ -62,19 +62,19 @@ public class EncryptionProgramJava {
                         System.out.println("Please input the email address of the recipient:");
                         keys += " " + scanner.nextLine().replaceAll(" ", "").toLowerCase(Locale.ROOT);
 
-                        Encoder huffman = new Huffman();
+                        Encrypter huffman = new Huffman();
 
                         String message = Utils.getMessageInput(scanner, true);
 
-                        String[] huffmanEncodedMessageAndTree = huffman.encode(message).split("\n");
+                        String[] huffmanEncodedMessageAndTree = huffman.encrypt(message).split("\n");
                         String huffmanTree = huffmanEncodedMessageAndTree[0];
                         String huffmanEncodedMessage = huffmanEncodedMessageAndTree[2];//todo maybe use this to seed RegularOlScrambling's RNG, as it's a number
 
                         keys += " " + huffmanTree;
 
-                        Encoder vignere = new ExpandedVignere(keys.split(" "));
+                        Encrypter vignere = new ExpandedVignere(keys.split(" "));
 
-                        String fullyEncryptedMessage = vignere.encode(huffmanEncodedMessage);
+                        String fullyEncryptedMessage = vignere.encrypt(huffmanEncodedMessage);
 
                         System.out.println("Encrypted message:\n" + huffmanTree + "\n\n" + fullyEncryptedMessage);
                     }
@@ -89,33 +89,33 @@ public class EncryptionProgramJava {
                     case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the decoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encoder vignere = new ExpandedVignere(keys);
+                        Encrypter vignere = new ExpandedVignere(keys);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
-                        String decryptedMessage = vignere.decode(encryptedMessage);
+                        String decryptedMessage = vignere.decrypt(encryptedMessage);
 
                         System.out.println("Decrypted message: " + decryptedMessage);
                     }
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the decoder");
                         String key = scanner.nextLine();
-                        Encoder vignere = new ClassicVignere(key);
+                        Encrypter vignere = new ClassicVignere(key);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
-                        String decryptedMessage = vignere.decode(encryptedMessage);
+                        String decryptedMessage = vignere.decrypt(encryptedMessage);
 
                         System.out.println("Decrypted message: " + decryptedMessage);
                     }
                     case "huffman" -> {
                         System.out.println("Please input the message's decoding tree");
                         String tree = scanner.nextLine();
-                        Encoder huffman = new Huffman();
+                        Encrypter huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, false);
-                        String decryptedMessage = huffman.decode(tree + "\n\n" + message);
+                        String decryptedMessage = huffman.decrypt(tree + "\n\n" + message);
                         System.out.println("Decrypted message: " + decryptedMessage);
                     }
                     case "regular_ol_scrambling" ->{
-                        Encoder scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, false);
-                        System.out.println("Decrypted message: " + scrambler.decode(message));
+                        System.out.println("Decrypted message: " + scrambler.decrypt(message));
                     }
                     case "master" -> {
 
@@ -134,11 +134,11 @@ public class EncryptionProgramJava {
                         keys += " " + huffmanTree;
                         String encryptedMessage = treeAndEncryptedMessage[2];
 
-                        Encoder vignere = new ExpandedVignere(keys.split(" "));
-                        String huffmanEncodedMessage = vignere.decode(encryptedMessage);
+                        Encrypter vignere = new ExpandedVignere(keys.split(" "));
+                        String huffmanEncodedMessage = vignere.decrypt(encryptedMessage);
 
-                        Encoder huffman = new Huffman();
-                        String fullyDecodedMessage = huffman.decode(huffmanTree + "\n\n" + huffmanEncodedMessage);
+                        Encrypter huffman = new Huffman();
+                        String fullyDecodedMessage = huffman.decrypt(huffmanTree + "\n\n" + huffmanEncodedMessage);
 
                         System.out.println("Decrypted message: " + fullyDecodedMessage);
                     }

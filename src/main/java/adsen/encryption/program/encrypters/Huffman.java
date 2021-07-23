@@ -1,4 +1,4 @@
-package adsen.encryption.program.encoders;
+package adsen.encryption.program.encrypters;
 
 import adsen.encryption.program.utils.CharTree;
 
@@ -9,14 +9,14 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-public class Huffman implements Encoder {
+public class Huffman implements Encrypter {
 
     public Huffman() {
 
     }
 
     @Override
-    public String encode(String input) {
+    public String encrypt(String input) {
         char[] charList = input.toCharArray();
 
         Map<Character, Integer> charFrequency = new HashMap<>();
@@ -52,7 +52,7 @@ public class Huffman implements Encoder {
     }
 
     @Override
-    public String decode(String encodedInput) {
+    public String decrypt(String encodedInput) {
 
         String[] treeAndMessage = encodedInput.split("\n");
         CharTree huffmanTree;

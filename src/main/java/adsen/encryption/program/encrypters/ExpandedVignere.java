@@ -1,4 +1,4 @@
-package adsen.encryption.program.encoders;
+package adsen.encryption.program.encrypters;
 
 import adsen.encryption.program.utils.Utils.CharScrambleUtils;
 
@@ -6,7 +6,7 @@ import adsen.encryption.program.utils.Utils.CharScrambleUtils;
  * An encryption system inspired by regular vignere encoding, but expanded to use any characters so it works more effectively,
  * using less lookup tables and more modular arithmetic.
  */
-public class ExpandedVignere implements Encoder {
+public class ExpandedVignere implements Encrypter {
     private final String[] keys;
     private final long hashCodeLong;
 
@@ -17,7 +17,7 @@ public class ExpandedVignere implements Encoder {
 
 
     @Override
-    public String encode(String input) {
+    public String encrypt(String input) {
         random.setSeed(this.hashCodeLong);
 
         char[] encodedString = new char[input.length()];
@@ -35,13 +35,13 @@ public class ExpandedVignere implements Encoder {
     }
 
     @Override
-    public String decode(String encodedInput) {
+    public String decrypt(String encodedInput) {
         random.setSeed(this.hashCodeLong);
 
         StringBuilder decodedString = new StringBuilder();
 
         for (char c : CharScrambleUtils.simpleStringToCharArray(encodedInput)) {
-            //To encode we added the random.nextInt(), so here we subtract. In essence, it's the same exact number
+            //To encrypt we added the random.nextInt(), so here we subtract. In essence, it's the same exact number
             char decodedChar = (char) Math.floorMod(c - random.nextInt(), 0x10000);
             decodedString.append(decodedChar);
         }

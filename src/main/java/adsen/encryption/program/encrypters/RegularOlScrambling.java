@@ -1,4 +1,4 @@
-package adsen.encryption.program.encoders;
+package adsen.encryption.program.encrypters;
 
 import adsen.encryption.program.utils.Utils.CharScrambleUtils;
 
@@ -6,7 +6,7 @@ import adsen.encryption.program.utils.Utils.CharScrambleUtils;
  * Just scrambles the characters of a message in a reversible manner
  * todo test
  */
-public class RegularOlScrambling implements Encoder {
+public class RegularOlScrambling implements Encrypter {
 
     long randomSeed;
 
@@ -24,7 +24,7 @@ public class RegularOlScrambling implements Encoder {
      * @return the scrambled message
      */
     @Override
-    public String encode(String input) {
+    public String encrypt(String input) {
         random.setSeed(randomSeed);
         String encodedString = input;
         int inputLength = input.length();
@@ -36,13 +36,13 @@ public class RegularOlScrambling implements Encoder {
     }
 
     /**
-     * This generates the same numbers as the {@link RegularOlScrambling#encode} function does to scramble the message's
+     * This generates the same numbers as the {@link RegularOlScrambling#encrypt} function does to scramble the message's
      * characters (provided the same seed and correct encrypted message obviously), and then applies the same swaps in reverse
      * order to restore the message back to its original state.
      * @param encodedInput The scrambled message we want to unscramble
      */
     @Override
-    public String decode(String encodedInput) {
+    public String decrypt(String encodedInput) {
         random.setSeed(randomSeed);
         String decodedString = encodedInput;
         int inputLength = encodedInput.length();

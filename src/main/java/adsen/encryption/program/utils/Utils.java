@@ -62,6 +62,7 @@ public class Utils {
          * A simple array of 64 chars which can be displayed and therefore easily copy-pasted or typed onto any keyboard. This
          * is useful because the characters themselves are arbitrary and useless, all that matters is the bit representation
          * of their index within the array.
+         * These are also the characters that the {@link adsen.encryption.program.encrypters.ClassicVignere#encrypt} can encrypt.
          */
         public static char[] CHARACTERS = new char[]{
                 '?', '0', '1', '2', '3', '4', '5', '6',

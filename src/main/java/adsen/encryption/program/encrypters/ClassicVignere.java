@@ -1,6 +1,4 @@
-package adsen.encryption.program.encoders;
-
-import adsen.encryption.program.utils.Utils.CharScrambleUtils;
+package adsen.encryption.program.encrypters;
 
 import java.util.Locale;
 
@@ -8,7 +6,7 @@ import java.util.Locale;
  * Regular vignere encoding, but expanded to use any character, using less lookup tables and more modular arithmetic.
  * todo test that this works
  */
-public class ClassicVignere implements Encoder {
+public class ClassicVignere implements Encrypter {
     private final String key;
 
     public ClassicVignere(String key) {
@@ -17,7 +15,7 @@ public class ClassicVignere implements Encoder {
 
 
     @Override
-    public String encode(String input) {
+    public String encrypt(String input) {
         char[] encodedString = new char[input.length()];
         //putting to lower case to simplify the maths
         char[] inputCharsLower = input.toLowerCase(Locale.ROOT).toCharArray();
@@ -35,7 +33,7 @@ public class ClassicVignere implements Encoder {
     }
 
     @Override
-    public String decode(String encodedInput) {
+    public String decrypt(String encodedInput) {
         char[] encodedString = new char[encodedInput.length()];
         //putting to lower case to simplify the maths
         char[] inputCharsLower = encodedInput.toLowerCase(Locale.ROOT).toCharArray();
