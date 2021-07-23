@@ -11,9 +11,6 @@ public class EncryptionProgramJava {
     public static void main(String[] args) {
         System.out.println("Encryption Program Running");
 
-        System.out.println((char)97);
-        System.out.println((int)'z');
-
         Scanner scanner = new Scanner(System.in);
 
         String input = "";
@@ -38,7 +35,7 @@ public class EncryptionProgramJava {
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the encoder");
                         String key = scanner.nextLine();
-                        Encrypter vignere = new ClassicVignere(key);
+                        Encrypter vignere = new ClassicVignere(scanner, key);
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = vignere.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
@@ -49,7 +46,7 @@ public class EncryptionProgramJava {
                         String encryptedMessage = huffman.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
-                    case "regular_ol_scrambling" ->{
+                    case "regular_ol_scrambling" -> {
                         Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, true);
                         System.out.println("Encrypted message: " + scrambler.decrypt(message));
@@ -98,7 +95,7 @@ public class EncryptionProgramJava {
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the decoder");
                         String key = scanner.nextLine();
-                        Encrypter vignere = new ClassicVignere(key);
+                        Encrypter vignere = new ClassicVignere(scanner, key);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = vignere.decrypt(encryptedMessage);
 
@@ -112,7 +109,7 @@ public class EncryptionProgramJava {
                         String decryptedMessage = huffman.decrypt(tree + "\n\n" + message);
                         System.out.println("Decrypted message: " + decryptedMessage);
                     }
-                    case "regular_ol_scrambling" ->{
+                    case "regular_ol_scrambling" -> {
                         Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, false);
                         System.out.println("Decrypted message: " + scrambler.decrypt(message));
@@ -144,7 +141,7 @@ public class EncryptionProgramJava {
                     }
                     default -> System.out.printf("Unknown encryption method '%s'\n", decoding);
                 }
-            } else if (!input.equals("end"))
+            } else if (!input.equalsIgnoreCase("end"))
                 System.out.println("Unknown action '" + input + "'");
         }
 
