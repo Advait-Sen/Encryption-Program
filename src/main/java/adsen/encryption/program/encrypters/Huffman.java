@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
-public class Huffman implements Encrypter {
+public class Huffman implements Encryptor {
 
     public Huffman() {
 

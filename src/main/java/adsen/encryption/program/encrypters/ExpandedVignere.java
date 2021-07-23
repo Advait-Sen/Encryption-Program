@@ -6,7 +6,7 @@ import adsen.encryption.program.utils.Utils.CharScrambleUtils;
  * An encryption system inspired by regular vignere encoding, but expanded to use any characters so it works more effectively,
  * using less lookup tables and more modular arithmetic.
  */
-public class ExpandedVignere implements Encrypter {
+public class ExpandedVignere implements Encryptor {
     private final String[] keys;
     private final long hashCodeLong;
 

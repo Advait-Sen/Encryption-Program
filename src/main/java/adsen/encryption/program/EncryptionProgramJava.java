@@ -27,7 +27,7 @@ public class EncryptionProgramJava {
                     case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the encoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encrypter vignere = new ExpandedVignere(keys);
+                        Encryptor vignere = new ExpandedVignere(keys);
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = vignere.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
@@ -35,19 +35,19 @@ public class EncryptionProgramJava {
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the encoder");
                         String key = scanner.nextLine();
-                        Encrypter vignere = new ClassicVignere(scanner, key);
+                        Encryptor vignere = new ClassicVignere(scanner, key);
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = vignere.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
                     case "huffman" -> {
-                        Encrypter huffman = new Huffman();
+                        Encryptor huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, true);
                         String encryptedMessage = huffman.encrypt(message);
                         System.out.println("Encrypted message: " + encryptedMessage);
                     }
                     case "regular_ol_scrambling" -> {
-                        Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        Encryptor scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, true);
                         System.out.println("Encrypted message: " + scrambler.decrypt(message));
                     }
@@ -59,7 +59,7 @@ public class EncryptionProgramJava {
                         System.out.println("Please input the email address of the recipient:");
                         keys += " " + scanner.nextLine().replaceAll(" ", "").toLowerCase(Locale.ROOT);
 
-                        Encrypter huffman = new Huffman();
+                        Encryptor huffman = new Huffman();
 
                         String message = Utils.getMessageInput(scanner, true);
 
@@ -69,7 +69,7 @@ public class EncryptionProgramJava {
 
                         keys += " " + huffmanTree;
 
-                        Encrypter vignere = new ExpandedVignere(keys.split(" "));
+                        Encryptor vignere = new ExpandedVignere(keys.split(" "));
 
                         String fullyEncryptedMessage = vignere.encrypt(huffmanEncodedMessage);
 
@@ -86,7 +86,7 @@ public class EncryptionProgramJava {
                     case "expanded_vignere" -> {
                         System.out.println("Please input the keys for the decoder, separated by a space bar");
                         String[] keys = scanner.nextLine().split(" ");
-                        Encrypter vignere = new ExpandedVignere(keys);
+                        Encryptor vignere = new ExpandedVignere(keys);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = vignere.decrypt(encryptedMessage);
 
@@ -95,7 +95,7 @@ public class EncryptionProgramJava {
                     case "classic_vignere" -> {
                         System.out.println("Please input the key for the decoder");
                         String key = scanner.nextLine();
-                        Encrypter vignere = new ClassicVignere(scanner, key);
+                        Encryptor vignere = new ClassicVignere(scanner, key);
                         String encryptedMessage = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = vignere.decrypt(encryptedMessage);
 
@@ -104,13 +104,13 @@ public class EncryptionProgramJava {
                     case "huffman" -> {
                         System.out.println("Please input the message's decoding tree");
                         String tree = scanner.nextLine();
-                        Encrypter huffman = new Huffman();
+                        Encryptor huffman = new Huffman();
                         String message = Utils.getMessageInput(scanner, false);
                         String decryptedMessage = huffman.decrypt(tree + "\n\n" + message);
                         System.out.println("Decrypted message: " + decryptedMessage);
                     }
                     case "regular_ol_scrambling" -> {
-                        Encrypter scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
+                        Encryptor scrambler = new RegularOlScrambling(0);//using seed 0, may change to something else later
                         String message = Utils.getMessageInput(scanner, false);
                         System.out.println("Decrypted message: " + scrambler.decrypt(message));
                     }
@@ -131,10 +131,10 @@ public class EncryptionProgramJava {
                         keys += " " + huffmanTree;
                         String encryptedMessage = treeAndEncryptedMessage[2];
 
-                        Encrypter vignere = new ExpandedVignere(keys.split(" "));
+                        Encryptor vignere = new ExpandedVignere(keys.split(" "));
                         String huffmanEncodedMessage = vignere.decrypt(encryptedMessage);
 
-                        Encrypter huffman = new Huffman();
+                        Encryptor huffman = new Huffman();
                         String fullyDecodedMessage = huffman.decrypt(huffmanTree + "\n\n" + huffmanEncodedMessage);
 
                         System.out.println("Decrypted message: " + fullyDecodedMessage);

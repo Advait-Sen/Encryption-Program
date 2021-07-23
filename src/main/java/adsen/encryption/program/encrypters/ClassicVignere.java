@@ -12,7 +12,7 @@ import static java.lang.Math.floorMod;
 /**
  * Regular vignere encoding, with no frills added.
  */
-public class ClassicVignere implements Encrypter {
+public class ClassicVignere implements Encryptor {
     private final String key;
 
     public ClassicVignere(Scanner scanner, String inputKey) {

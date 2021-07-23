@@ -5,7 +5,7 @@ import adsen.encryption.program.utils.Utils.CharScrambleUtils;
 /**
  * Just scrambles the characters of a message in a reversible manner
  */
-public class RegularOlScrambling implements Encrypter {
+public class RegularOlScrambling implements Encryptor {
 
     long randomSeed;
 
