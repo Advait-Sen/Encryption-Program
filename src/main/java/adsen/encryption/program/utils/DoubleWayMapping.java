@@ -1,7 +1,7 @@
 package adsen.encryption.program.utils;
 
 
-import java.util.*;
+import java.util.*;//todo replace this with individual imports later
 
 /**
  * This file is purely academic, because I felt that it was a cool idea to have it and that it was an interesting challenge.
@@ -9,130 +9,172 @@ import java.util.*;
  */
 public class DoubleWayMapping<A, B> implements Collection<Pair<A, B>> {
 
-    private static final float DEFAULT_LOAD_FACTOR = 0.75f;
-    private final float loadFactor;
-    int[] itemAHashes;
-    int[] itemBHashes;
-    Pair<A, B>[][] items;
-    private int size = 0;
-    private int capacity = 4;
-
+    Map<A, B> AtoBMap = new HashMap<>();
+    Map<B, A> BtoAMap = new HashMap<>();
 
     public DoubleWayMapping() {
-        loadFactor = DEFAULT_LOAD_FACTOR;
-        itemAHashes = new int[capacity];
-        itemBHashes = new int[capacity];
-        items = new Pair[capacity][capacity];
+
     }
 
-    public DoubleWayMapping(float loadFactor) {
-        if (loadFactor > 1)
-            throw new IllegalArgumentException("'loadFactor' parameter must not exceed 1, found '" + loadFactor + "'");
-        this.loadFactor = loadFactor;
-        itemAHashes = new int[capacity];
-        itemBHashes = new int[capacity];
-        items = new Pair[capacity][capacity];
-    }
+    public DoubleWayMapping(List<Pair<A, B>> pairs) {
+        for (Pair<A, B> pair : pairs) {
+            A a = pair.getA();
+            B b = pair.getB();
 
-    /**
-     * The number of value-value mappings in this Mapping
-     *
-     * @return the number of value-value entries in this map
-     */
-    public int size() {
-        return size;
-    }
+            if (AtoBMap.containsKey(a))
+                throw new IllegalArgumentException("Invalid duplicate key '" + a.toString() + "'");
+            if (BtoAMap.containsKey(b))
+                throw new IllegalArgumentException("Invalid duplicate key '" + b.toString() + "'");
 
-    private void resize() {
-        capacity = (int) (((float) size + 1) / (1 - loadFactor));
-        itemAHashes = Arrays.copyOf(itemAHashes, capacity);
-        itemBHashes = Arrays.copyOf(itemBHashes, capacity);
-        items = (Pair<A, B>[][]) Utils.resize(items, capacity, capacity);
-    }
-
-    public boolean add(Pair<A, B> item) {//todo
-        if (contains(item))
-            return false;
-        if (((float) size + 1) / ((float) capacity) > loadFactor) {
-            resize();
+            AtoBMap.put(a, b);
+            BtoAMap.put(b, a);
         }
-        size++;
-
-
-        return true;
     }
 
-    public boolean add(A a, B b) {
-        return add((Pair<A, B>) Pair.of(a, b));
+    public A getA(B o) {
+        return BtoAMap.get(o);
+    }
+
+    public B getB(A o) {
+        return AtoBMap.get(o);
+    }
+
+    @Override
+    public int size() {
+        return AtoBMap.size();
     }
 
     @Override
     public boolean isEmpty() {
-        return size == 0;
+        return AtoBMap.isEmpty();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean contains(Object o) {
-        if (o instanceof Pair) {
-            Pair oPair = (Pair) o;
-            return items[oPair.getA().hashCode()][oPair.getB().hashCode()] == oPair;
+        try {
+            return AtoBMap.containsKey(o) || BtoAMap.containsKey(o) || AtoBMap.containsKey(((Pair<A, B>) o).getA());
+        } catch (ClassCastException cce) {
+            return false;
         }
-        return false;
     }
 
     @Override
-    public Iterator<Pair<A, B>> iterator() {//todo
-        return null;
+    public Iterator<Pair<A, B>> iterator() {
+        return new Iterator<>() {
+            final Iterator<Map.Entry<A, B>> iteratorA = AtoBMap.entrySet().iterator();
+
+            @Override
+            public boolean hasNext() {
+                return iteratorA.hasNext();
+            }
+
+            @Override
+            public Pair<A, B> next() {
+                return new Pair<A, B>(iteratorA.next());
+            }
+        };
     }
 
     @Override
-    public Object[] toArray() {//todo
-        return new Pair[0];
+    public Object[] toArray() {
+        Object[] ret = new Object[size()];
+
+        Iterator<A> iteratorA = AtoBMap.keySet().iterator();
+        Iterator<B> iteratorB = BtoAMap.keySet().iterator();
+
+        for (int i = 0; i < ret.length; i++) {
+            ret[i] = Pair.of(iteratorA.next(), iteratorB.next());
+        }
+
+        return ret;
     }
 
     @Override
-    public <T> T[] toArray(T[] a) {//todo
-        return null;
+    public <T> T[] toArray(T[] a) {
+        int size = size();
+        if (a.length < size)
+            // Make a new array of a's runtime type, but my contents:
+            //noinspection unchecked
+            return (T[]) Arrays.copyOf(toArray(), size, a.getClass());
+        //arraycopy
+
+        Iterator<A> iteratorA = AtoBMap.keySet().iterator();
+        Iterator<B> iteratorB = BtoAMap.keySet().iterator();
+
+        for (int i = 0; i < size; i++) {
+            //noinspection unchecked
+            a[i] = (T) Pair.of(iteratorA.next(), iteratorB.next());
+        }
+        if (a.length > size)
+            a[size] = null;
+        return a;
     }
 
     @Override
-    public boolean remove(Object o) {//todo
-        return false;
+    public boolean add(Pair<A, B> abPair) {
+        if (AtoBMap.containsKey(abPair.getA()) || BtoAMap.containsKey(abPair.getB()))
+            return false;
+        AtoBMap.put(abPair.getA(), abPair.getB());
+        BtoAMap.put(abPair.getB(), abPair.getA());
+        return true;
     }
 
     @Override
-    public boolean containsAll(Collection<?> c) {//todo
-        return false;
+    public boolean remove(Object o) {
+        try {
+            boolean success = AtoBMap.remove(o) == null;
+            if (success) {
+                BtoAMap.remove(o);
+                return true;
+            } else if (o instanceof Pair) {
+                //noinspection unchecked
+                Pair<A, B> po = (Pair<A, B>) o;
+                if (getA((B) po.getB()) == null)
+                    return false;
+                else
+                    return remove(po.getA());
+            } else
+                return false;
+        } catch (ClassCastException ignored) {
+            return false;
+        }
     }
 
     @Override
-    public boolean addAll(Collection<? extends Pair<A, B>> c) {//todo
-        return false;
+    public boolean containsAll(Collection<?> c) {
+        for (Object o : c) {
+            if (!contains(o)) break;
+        }
+        return true;
     }
 
     @Override
-    public boolean removeAll(Collection<?> c) {//todo
-        return false;
+    public boolean addAll(Collection<? extends Pair<A, B>> c) {
+        boolean changed = false;
+        for (Pair<A, B> p : c) {
+            if (this.add(p)) changed = true;
+        }
+        return changed;
     }
 
     @Override
-    public boolean retainAll(Collection<?> c) {//todo
-        return false;
+    public boolean removeAll(Collection<?> c) {
+        boolean changed = false;
+        for (Object o : c) {
+            if (this.remove(o)) changed = true;
+        }
+        return changed;
     }
 
     @Override
-    public void clear() {//todo
-
+    public boolean retainAll(Collection<?> c) {
+        return this.removeIf(t -> !c.contains(t));
     }
 
     @Override
-    public boolean equals(Object o) {//todo
-        return false;
+    public void clear() {
+        AtoBMap.clear();
+        BtoAMap.clear();
     }
-
-    @Override
-    public int hashCode() {//todo
-        return 0;
-    }
-
 }

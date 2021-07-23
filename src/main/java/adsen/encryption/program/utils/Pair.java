@@ -11,8 +11,17 @@ public class Pair<A, B> implements Map.Entry<A, B> {
         this.b = b;
     }
 
+    public Pair(Map.Entry<A, B> entry) {
+        this.a = entry.getKey();
+        this.b = entry.getValue();
+    }
+
     public static <T> Pair<T, T> of(T a, T b) {
         return new Pair<>(a, b);
+    }
+
+    public static <T> Pair<T, T> of(Map.Entry<T, T> entry) {
+        return new Pair<>(entry.getKey(), entry.getValue());
     }
 
     public A getA() {
