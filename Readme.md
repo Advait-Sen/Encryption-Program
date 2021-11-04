@@ -17,5 +17,5 @@ more so experimental datastructures, which I am using to teach myself Computer S
 which is an invention of my own).
 
 #### Contributing
-Import the Gradle project into your IDE, and that's about it. Make sure you have the appropriate JDK installed
+Import the Gradle project into your IDE, and that's about it. Make sure you have the appropriate Java version (16) installed
 
