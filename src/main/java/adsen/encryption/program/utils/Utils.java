@@ -52,6 +52,10 @@ public class Utils {
         return temp;
     }
 
+    public static char hexChar(int num) {
+        return (char) (num + (num < 10 ? '0' : 'A'));
+    }
+
     /**
      * A class of utility functions to help scramble characters and store characters which the computer may not be able
      * to display into a neater format

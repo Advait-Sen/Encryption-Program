@@ -24,14 +24,16 @@ public class Huffman implements Encryptor {
         for (char c : charList) {
             charFrequency.put(c, charFrequency.getOrDefault(c, 0) + 1);
         }
-
+        System.out.println("charFrequency = " + charFrequency);
         List<CharTree> sortedCharacters = charFrequency.keySet().stream().
                 sorted((c1, c2) -> Integer.compare(charFrequency.get(c2), charFrequency.get(c1))).
-                map(CharTree::new).collect(Collectors.toList());
+                map(c -> new CharTree(c, charFrequency.get(c))).collect(Collectors.toList());
+        System.out.println("sortedCharacters = " + sortedCharacters);
+
         List<CharTree> childBuffer = new ArrayList<>();
 
-        while (sortedCharacters.size() > 9) {
-            for (int i = 0; i < 10; i++) {
+        while (sortedCharacters.size() > 16) {
+            for (int i = 0; i < Math.min(16, sortedCharacters.size() - 15); i++) {
                 childBuffer.add(sortedCharacters.remove(sortedCharacters.size() - 1));
             }
 
@@ -42,7 +44,7 @@ public class Huffman implements Encryptor {
 
         CharTree huffmanTree = new CharTree(sortedCharacters);
 
-        StringBuilder encodedString = new StringBuilder(huffmanTree.toString().replaceAll("\n","\\\\n") + "\n\n");
+        StringBuilder encodedString = new StringBuilder(huffmanTree.toString().replaceAll("\n", "\\\\n") + "\n\n");
 
         for (char c : charList) {
             encodedString.append(huffmanTree.charPath(c));
