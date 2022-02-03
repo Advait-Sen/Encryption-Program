@@ -1,13 +1,13 @@
 package adsen.encryption.program.encrypters;
 
 import adsen.encryption.program.utils.CharTree;
+import adsen.encryption.program.utils.MinCharTreeHeap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.stream.Collectors;
 
 public class Huffman implements Encryptor {
 
@@ -25,21 +25,20 @@ public class Huffman implements Encryptor {
             charFrequency.put(c, charFrequency.getOrDefault(c, 0) + 1);
         }
         System.out.println("charFrequency = " + charFrequency);
-        List<CharTree> sortedCharacters = charFrequency.keySet().stream().
-                sorted((c1, c2) -> Integer.compare(charFrequency.get(c2), charFrequency.get(c1))).
-                map(c -> new CharTree(c, charFrequency.get(c))).collect(Collectors.toList());
+        MinCharTreeHeap sortedCharacters = new MinCharTreeHeap();
+        charFrequency.keySet().forEach(c -> sortedCharacters.add(new CharTree(c, charFrequency.get(c))));
         System.out.println("sortedCharacters = " + sortedCharacters);
 
         List<CharTree> childBuffer = new ArrayList<>();
 
         while (sortedCharacters.size() > 16) {
             for (int i = 0; i < Math.min(16, sortedCharacters.size() - 15); i++) {
-                childBuffer.add(sortedCharacters.remove(sortedCharacters.size() - 1));
+                childBuffer.add(sortedCharacters.pop());
             }
 
             sortedCharacters.add(new CharTree(childBuffer));
             childBuffer.clear();
-            sortedCharacters.sort((ct1, ct2) -> Integer.compare(ct2.getFrequency(), ct1.getFrequency()));
+            //sortedCharacters.sort((ct1, ct2) -> Integer.compare(ct2.getFrequency(), ct1.getFrequency()));
         }
 
         CharTree huffmanTree = new CharTree(sortedCharacters);

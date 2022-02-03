@@ -53,7 +53,7 @@ public class Utils {
     }
 
     public static char hexChar(int num) {
-        return (char) (num + (num < 10 ? '0' : 'A'));
+        return (char) (num + (num < 10 ? '0' : 'A' - 10));
     }
 
     /**
