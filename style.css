@@ -1,0 +1,25 @@
+.container-1 {
+    border: 2px solid black;
+    margin: 25 auto;
+    width: 75%;
+    text-align: center;
+    word-wrap: break-word;
+}
+
+.flex-box-container-1 {
+    display: flex;
+    border: 2px solid white;
+    padding: 10px;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+.flex-box-container-2 {
+    display: flex;
+    border: 2px solid black;
+    padding: 10px;
+    flex-wrap: wrap;
+    margin: 25 auto;
+    width: 90%;
+    justify-content: space-evenly;
+}

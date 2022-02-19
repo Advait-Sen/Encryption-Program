@@ -1,0 +1,38 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Program Web App</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container-1">
+        <h2>Welcome to the Encryption Program!</h2>
+        <h5>By Advait Sen</h5>
+        <h6>This is a tool which encrypts text. It has less features than the
+            <a href="https://github.com/Advait-Sen/Encryption-Program">java version</a> but is more user-friendly
+        </h6>
+        <h6>For the main page (i.e the code), go to <a
+                href="https://github.com/Advait-Sen/Encryption-Program">https://github.com/Advait-Sen/Encryption-Program</a>
+        </h6>
+        <div class="flex-box-container-1" , id="encryptionbuttons">
+            <button class="btn-primary" , id="classicvignere" , onclick="onClickEncryption('classicvignere')">Classic
+                vignere
+                cipher</button>
+        </div>
+        <div class="flex-box-container-1" , id="extras"></div>
+
+
+        <textarea id="messageinput" , name="messageinput"></textarea>
+        <button class="btn-primary" onclick="onClickEncrypt()">Encrypt</button>
+        <button class="btn-primary" onclick="onClickDecrypt()">Decrypt</button>
+        <h6>Output:</h6>
+        <p id="output" aria-colcount="25">Encrypted text</p>
+    </div>
+</body>
+<script src="encryption.js"></script>
+
+</html>

@@ -9,13 +9,10 @@ different, and while the overall gist of it is mathematical and therefore inhere
 languages, each one has its own quirks which change the exact details of implementation. Therefore, each version has its
 own contributing section, as each version has a different way of accepting contributions.
 
-### Java version
-I made the Java version a Gradle project, as I am rather familiar with them from other work I've done. I made the Encoder.java
-class be the main interface for anything which encodes in this project, because I found it more logical to do so. I also
-have one big Utils.java file in my `utils` package, which I will keep that way due to the other files in there which are
-more so experimental datastructures, which I am using to teach myself Computer Science (like the LinkedList, or the DoubleWayMapping,
-which is an invention of my own).
+### Web version
+This is just a simple HTML page at [Encryption Program](https://advait-sen.github.io/Encryption-Program).
+It's not meant to be fully up to date, just containing some of the most important encryption types.
 
 #### Contributing
-Import the Gradle project into your IDE, and that's about it. Make sure you have the appropriate Java version (16) installed
+Open it up and modify the code, I guess.
 
